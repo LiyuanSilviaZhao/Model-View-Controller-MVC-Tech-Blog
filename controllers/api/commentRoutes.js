@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Post, User, Comment } = require('../../models');
+const withAuth = require('../../utils/auth');
 
 
 router.get('/', async(req,res)=>{
@@ -21,15 +22,12 @@ router.get('/:id', async(req,res)=>{
     }
 })
 
-router.post('/', async(req,res)=>{
-    if (!req.session.activeUser){
-        return res.redirect('/login')
-    }
+router.post('/',withAuth, async(req,res)=>{
     try{
         const commentData = await Comment.create({
             body:req.body.body,
-            UserId: req.session.activeUser.id,
-            PostId: req.params.id
+            user_id: req.session.user_id,
+            post_id: req.params.id
         });
         res.json(commentData);
     }catch(err){
@@ -37,10 +35,7 @@ router.post('/', async(req,res)=>{
     }
 })
 
-router.delete('/:id', async(req,res)=>{
-    if (!req.session.activeUser){
-        return res.redirect('/login')
-    }
+router.delete('/:id', withAuth, async(req,res)=>{
     try{
         const delData = await Comment.destroy({where:{id:req.params.id}})
         res.json(delData)

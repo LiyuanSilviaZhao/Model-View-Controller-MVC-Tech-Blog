@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Post, User, Comment } = require('../../models');
+const withAuth = require('../../utils/auth');
 
 
 router.get('/', async(req,res)=>{
@@ -21,15 +22,12 @@ router.get('/:id', async(req,res)=>{
     }
 })
 
-router.post('/', async(req,res)=>{
-    if (!req.session.activeUser){
-        return res.redirect('/login')
-    }
+router.post('/',withAuth, async(req,res)=>{
     try{
         const postData = await Post.create({
             title:req.body.title,
             body:req.body.body,
-            UserId: req.session.activeUser.id
+            user_id: req.session.user_id
         });
         res.status(201).json(postData);
     }catch(err){
@@ -37,15 +35,12 @@ router.post('/', async(req,res)=>{
     }
 })
 
-router.put('/:id', async(req,res)=>{
-    if (!req.session.activeUser){
-        return res.redirect('/login')
-    }
+router.put('/:id',withAuth, async(req,res)=>{
     try{
         const update =  await Post.update(req.body, {
             where:{
                 id:req.params.id,
-                UserId:req.session.activeUser.id
+                user_id:req.session.user_id
             }
         });
         if (!update){
@@ -57,12 +52,9 @@ router.put('/:id', async(req,res)=>{
     }
 })
 
-router.delete('/:id', async(req,res)=>{
-    if (!req.session.activeUser){
-        return res.status(401).json({message: "not logged in"});
-    }
+router.delete('/:id',withAuth, async(req,res)=>{
     try{
-        const deleteData = await Post.destroy({where:{id:req.params.id, UserId:req.session.activeUser.id}})
+        const deleteData = await Post.destroy({where:{id:req.params.id, UserId:req.session.user_id}})
         res.json(deleteData)
     }catch(err){
         res.json({message:err.message})

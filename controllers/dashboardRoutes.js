@@ -1,12 +1,11 @@
 const router = require('express').Router();
 const sequelize = require('../config/connection');
 const { Post, User, Comment } = require('../models');
+const withAuth = require("../utils/auth");
+
 
 // get all posts for dashboard
-router.get('/', (req, res) => {
-    if (!req.session.activeUser) {
-        return res.redirect('/login')
-    }
+router.get('/', withAuth,(req, res) => {
     Post.findAll({
         where: {
             user_id: req.session.user_id
@@ -27,9 +26,6 @@ router.get('/', (req, res) => {
 });
 
 router.get('/edit/:id', withAuth, (req, res) => {
-    if (!req.session.activeUser) {
-        return res.redirect('/login')
-    }
     Post.findOne({
         where: { id: req.params.id },
         include: [User, {
@@ -55,10 +51,7 @@ router.get('/edit/:id', withAuth, (req, res) => {
         });
 });
 
-router.get('/new', (req,res)=>{
-    if (!req.session.activeUser){
-        return res.redirect('/login')
-    }
+router.get('/new', withAuth, (req,res)=>{
     res.render('create-post');
 })
 

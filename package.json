@@ -1,0 +1,22 @@
+{
+  "name": "model-view-controller-mvc-tech-blog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "seed": "node seeds/seed.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LiyuanSilviaZhao/Model-View-Controller-MVC-Tech-Blog.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LiyuanSilviaZhao/Model-View-Controller-MVC-Tech-Blog/issues"
+  },
+  "homepage": "https://github.com/LiyuanSilviaZhao/Model-View-Controller-MVC-Tech-Blog#readme"
+}

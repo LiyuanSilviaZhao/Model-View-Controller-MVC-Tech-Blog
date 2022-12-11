@@ -1,0 +1,18 @@
+[
+    {
+      "body": "I like it!!!",
+      "user_id":"2",
+      "post_id":"1"
+
+    },
+    {
+      "body": "I like it, tooooooooo!!!",
+      "user_id":"1",
+      "post_id":"3"
+    },
+    {
+      "body": "Have a nice day!",
+      "user_id":"3",
+      "post_id":"2"
+    }
+  ]
